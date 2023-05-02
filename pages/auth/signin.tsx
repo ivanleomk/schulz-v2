@@ -20,11 +20,9 @@ const SignIn = ({ csrfToken }: Props) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    signIn("email", { email, callbackUrl: "/auth/verify-signup" }).finally(
-      () => {
-        setLoading(false);
-      }
-    );
+    signIn("email", { email, callbackUrl: "/dashboard" }).finally(() => {
+      setLoading(false);
+    });
   };
 
   return (
