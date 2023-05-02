@@ -8,6 +8,7 @@ import { PrismaClient } from "@prisma/client";
 
 const postmarkClient = new Client(env.POSTMARK_API_TOKEN);
 const prismaClient = new PrismaClient();
+
 export const authOptions: NextAuthOptions = {
   // huh any! I know.
   // This is a temporary fix for prisma client.
