@@ -4,6 +4,23 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>;
 
+export interface Accounts {
+  id: string;
+  userId: string;
+  type: string;
+  provider: string;
+  providerAccountId: string;
+  refresh_token: string | null;
+  access_token: string | null;
+  expires_at: number | null;
+  token_type: string | null;
+  scope: string | null;
+  id_token: string | null;
+  session_state: string | null;
+  created_at: Generated<Date>;
+  updated_at: Generated<Date>;
+}
+
 export interface Collateral {
   collateral_id: Generated<number>;
   url: string;
@@ -34,7 +51,9 @@ export interface Deal {
 export interface Email {
   email_id: Generated<number>;
   email_content: string;
-  prospects_involved: string;
+  customer_id: number;
+  email_subject: string;
+  user_id: string;
 }
 
 export interface File {
@@ -46,25 +65,49 @@ export interface File {
   startedprocessing: Generated<Date>;
   isTranscribed: Generated<number>;
   transcript: string | null;
+  meeting_id: number;
+  userId: string;
 }
 
 export interface Meeting {
   meeting_id: Generated<number>;
-  user_id: string;
   summary: string;
   meeting_date: Date;
   meeting_notes: string;
+  userId: string;
 }
 
 export interface Note {
   note_id: Generated<number>;
   note_text: string;
+  userId: string;
 }
 
-export interface User {
-  user_id: string;
-  user_name: string;
-  credits: Generated<number>;
+export interface Sessions {
+  id: string;
+  sessionToken: string;
+  userId: string;
+  expires: Date;
+}
+
+export interface Users {
+  id: string;
+  name: string | null;
+  email: string | null;
+  emailVerified: Date | null;
+  image: string | null;
+  created_at: Generated<Date>;
+  updated_at: Generated<Date>;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  stripe_price_id: string | null;
+  stripe_current_period_end: Date | null;
+}
+
+export interface VerificationTokens {
+  identifier: string;
+  token: string;
+  expires: Date;
 }
 
 export interface Waitlist {
@@ -75,7 +118,8 @@ export interface Waitlist {
 }
 
 export interface DB {
-  collateral: Collateral;
+  accounts: Accounts;
+  Collateral: Collateral;
   Company: Company;
   Customer: Customer;
   Deal: Deal;
@@ -83,6 +127,8 @@ export interface DB {
   File: File;
   Meeting: Meeting;
   Note: Note;
-  User: User;
+  sessions: Sessions;
+  users: Users;
+  verification_tokens: VerificationTokens;
   Waitlist: Waitlist;
 }
