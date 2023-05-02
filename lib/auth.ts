@@ -27,6 +27,18 @@ export const authOptions: NextAuthOptions = {
         },
       },
       from: process.env.SMTP_FROM,
+      sendVerificationRequest: async ({ identifier, url, provider }) => {
+        const result = await postmarkClient.sendEmailWithTemplate({
+          TemplateId: 31612989,
+          To: identifier,
+          From: "hello@ivanleo.com",
+          TemplateModel: {},
+        });
+
+        if (result.ErrorCode) {
+          throw new Error(result.Message);
+        }
+      },
     }),
   ],
   pages: {
