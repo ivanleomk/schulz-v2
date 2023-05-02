@@ -54,7 +54,7 @@ const prodConfig = EmailProvider({
   },
 });
 
-const emailConfig = process.env.VERCEL_ENV ? devConfig : prodConfig;
+const emailConfig = process.env.VERCEL_ENV ? prodConfig : devConfig;
 
 export default NextAuth({
   providers: [emailConfig],
