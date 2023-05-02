@@ -4,15 +4,15 @@ import EmailProvider from "next-auth/providers/email";
 import { Client } from "postmark";
 import { prismadb as db } from "@/lib/db";
 import { env } from "@/env.mjs";
-import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaClient } from "@prisma/client";
 
 const postmarkClient = new Client(env.POSTMARK_API_TOKEN);
-
+const prismaClient = new PrismaClient();
 export const authOptions: NextAuthOptions = {
   // huh any! I know.
   // This is a temporary fix for prisma client.
   // @see https://github.com/prisma/prisma/issues/16117
-  adapter: PrismaAdapter(db as any),
+  adapter: PrismaAdapter(prismaClient),
   session: {
     strategy: "jwt",
   },
