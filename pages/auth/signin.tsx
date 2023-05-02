@@ -20,9 +20,11 @@ const SignIn = ({ csrfToken }: Props) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    signIn("email", { email, callbackUrl: "/dashboard" }).finally(() => {
-      setLoading(false);
-    });
+    signIn("email", { email, callbackUrl: "/dashboard" })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -70,7 +72,7 @@ const SignIn = ({ csrfToken }: Props) => {
                   {loading ? (
                     <ClipLoader size={20} color="white" className="my-1" />
                   ) : (
-                    "Sign Up"
+                    "Sign In"
                   )}
                 </button>
               </div>

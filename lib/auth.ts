@@ -17,35 +17,17 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   providers: [
-    process.env.VERCEL_ENV === "preview"
-      ? CredentialsProvider({
-          name: "Credentials",
-          credentials: {
-            email: {
-              label: "Email",
-              value: "ivanleomk@gmail.com",
-            },
-          },
-          async authorize() {
-            return {
-              id: "1",
-              name: "J Smith",
-              email: "jsmith@example.com",
-              image: "https://i.pravatar.cc/150?u=jsmith@example.com",
-            };
-          },
-        })
-      : EmailProvider({
-          server: {
-            host: process.env.SMTP_HOST,
-            port: process.env.SMTP_PORT,
-            auth: {
-              user: process.env.SMTP_USER,
-              pass: process.env.SMTP_PASSWORD,
-            },
-          },
-          from: process.env.SMTP_FROM,
-        }),
+    EmailProvider({
+      server: {
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD,
+        },
+      },
+      from: process.env.SMTP_FROM,
+    }),
   ],
   pages: {
     signIn: "/auth/signin",
