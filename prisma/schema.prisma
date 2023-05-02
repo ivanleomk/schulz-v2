@@ -157,15 +157,15 @@ model File {
     key               String   @unique
     url               String   @db.VarChar(1000)
     createdAt         DateTime @default(now())
-    userId            String
-    user              User     @relation(fields: [userId], references: [id])
+    userId            String?
+    user              User?    @relation(fields: [userId], references: [id])
     // Mutex Lock
     isProcessing      Boolean  @default(false)
     startedprocessing DateTime @default(now())
     isTranscribed     Boolean  @default(false)
     transcript        String?  @db.VarChar(10000)
-    meeting           Meeting  @relation(fields: [meeting_id], references: [meeting_id])
-    meeting_id        Int
+    meeting           Meeting? @relation(fields: [meeting_id], references: [meeting_id])
+    meeting_id        Int?
 
     @@index([userId])
     @@index([meeting_id])

@@ -65,8 +65,8 @@ export interface File {
   startedprocessing: Generated<Date>;
   isTranscribed: Generated<number>;
   transcript: string | null;
-  meeting_id: number;
-  userId: string;
+  meeting_id: number | null;
+  userId: string | null;
 }
 
 export interface Meeting {
