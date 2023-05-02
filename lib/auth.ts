@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   providers: [
-    process.env.VERCEL_ENV === "preview"
+    true
       ? CredentialsProvider({
           name: "Credentials",
           credentials: {
@@ -73,12 +73,11 @@ export const authOptions: NextAuthOptions = {
           },
         }),
   ],
-  pages:
-    process.env.VERCEL_ENV === "preview"
-      ? {}
-      : {
-          signIn: "/auth/signin",
-          verifyRequest: "/auth/success-signin",
-          newUser: "/dashboard",
-        },
+  pages: true
+    ? {}
+    : {
+        signIn: "/auth/signin",
+        verifyRequest: "/auth/success-signin",
+        newUser: "/dashboard",
+      },
 };

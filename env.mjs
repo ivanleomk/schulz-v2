@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     // This is optional because it's only used in development.
     // See https://next-auth.js.org/deployment.
-    NEXTAUTH_URL: z.string().url().optional(),
+
     NEXTAUTH_SECRET: z.string().min(1),
     DATABASE_URL: z.string().min(1),
     POSTMARK_API_TOKEN: z.string().min(1),
@@ -27,7 +27,6 @@ export const env = createEnv({
     //TODO: Look at this article more closely -> https://andreaskeller.name/blog/nextjs-passwordless-email-auth
   },
   runtimeEnv: {
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     POSTMARK_API_TOKEN: process.env.POSTMARK_API_TOKEN,
