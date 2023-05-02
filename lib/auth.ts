@@ -19,65 +19,43 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   providers: [
-    true
-      ? CredentialsProvider({
-          name: "Credentials",
-          credentials: {
-            username: {
-              label: "Username",
-              type: "text",
-              placeholder: "jsmith",
-            },
-            password: { label: "Password", type: "password" },
-          },
-          async authorize() {
-            return {
-              id: "1",
-              name: "J Smith",
-              email: "jsmith@example.com",
-              image: "https://i.pravatar.cc/150?u=jsmith@example.com",
-            };
-          },
-        })
-      : EmailProvider({
-          server: {
-            host: process.env.SMTP_HOST,
-            port: process.env.SMTP_PORT,
-            auth: {
-              user: process.env.SMTP_USER,
-              pass: process.env.SMTP_PASSWORD,
-            },
-          },
-          from: process.env.SMTP_FROM,
-          sendVerificationRequest: async ({ identifier, url, provider }) => {
-            const result = await postmarkClient.sendEmailWithTemplate({
-              TemplateId: 31612989,
-              To: identifier,
-              From: "hello@ivanleo.com",
-              TemplateModel: {
-                url,
-              },
-              Headers: [
-                {
-                  // Set this to prevent Gmail from threading emails.
-                  // See https://stackoverflow.com/questions/23434110/force-emails-not-to-be-grouped-into-conversations/25435722.
-                  Name: "X-Entity-Ref-ID",
-                  Value: new Date().getTime() + "",
-                },
-              ],
-            });
-
-            if (result.ErrorCode) {
-              throw new Error(result.Message);
-            }
-          },
-        }),
-  ],
-  pages: true
-    ? {}
-    : {
-        signIn: "/auth/signin",
-        verifyRequest: "/auth/success-signin",
-        newUser: "/dashboard",
+    EmailProvider({
+      server: {
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD,
+        },
       },
+      from: process.env.SMTP_FROM,
+      sendVerificationRequest: async ({ identifier, url, provider }) => {
+        const result = await postmarkClient.sendEmailWithTemplate({
+          TemplateId: 31612989,
+          To: identifier,
+          From: "hello@ivanleo.com",
+          TemplateModel: {
+            url,
+          },
+          Headers: [
+            {
+              // Set this to prevent Gmail from threading emails.
+              // See https://stackoverflow.com/questions/23434110/force-emails-not-to-be-grouped-into-conversations/25435722.
+              Name: "X-Entity-Ref-ID",
+              Value: new Date().getTime() + "",
+            },
+          ],
+        });
+
+        if (result.ErrorCode) {
+          throw new Error(result.Message);
+        }
+      },
+    }),
+  ],
+  pages: {
+    signIn: "/auth/signin",
+    verifyRequest: "/auth/success-signin",
+    newUser: "/dashboard",
+  },
 };
