@@ -33,7 +33,17 @@ export const authOptions: NextAuthOptions = {
           TemplateId: 31612989,
           To: identifier,
           From: "hello@ivanleo.com",
-          TemplateModel: {},
+          TemplateModel: {
+            url,
+          },
+          Headers: [
+            {
+              // Set this to prevent Gmail from threading emails.
+              // See https://stackoverflow.com/questions/23434110/force-emails-not-to-be-grouped-into-conversations/25435722.
+              Name: "X-Entity-Ref-ID",
+              Value: new Date().getTime() + "",
+            },
+          ],
         });
 
         if (result.ErrorCode) {
