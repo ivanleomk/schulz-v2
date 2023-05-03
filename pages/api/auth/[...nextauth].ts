@@ -29,12 +29,12 @@ const prodConfig = EmailProvider({
   },
   from: process.env.SMTP_FROM,
   sendVerificationRequest: async ({ identifier, url, provider }) => {
-    const postmarkClient = new Client(process.env.POSTMARK_API_TOKEN);
+    const postmarkClient = new Client(process.env.POSTMARK_API_TOKEN as string);
 
     const result = await postmarkClient.sendEmailWithTemplate({
       TemplateId: 31612989,
       To: identifier,
-      From: provider.from,
+      From: provider.from as string,
       TemplateModel: {
         url,
       },
@@ -62,4 +62,43 @@ export default NextAuth({
     strategy: "jwt",
   },
   adapter: PrismaAdapter(prisma),
+  callbacks: {
+    async session({ token, session }) {
+      if (token && session && session.user) {
+        const newSession = {
+          ...session,
+          user: {
+            id: token.id,
+            name: token.name,
+            email: token.email,
+            image: token.picture,
+          },
+        };
+        return newSession;
+      }
+
+      return session;
+    },
+    async jwt({ token, user }) {
+      const dbUser = await prisma.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      });
+
+      if (!dbUser) {
+        if (user) {
+          token.id = user?.id;
+        }
+        return token;
+      }
+
+      return {
+        id: dbUser.id,
+        name: dbUser.name,
+        email: dbUser.email,
+        picture: dbUser.image,
+      };
+    },
+  },
 });
