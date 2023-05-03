@@ -16,6 +16,7 @@
     "@planetscale/database": "^1.7.0",
     "@prisma/client": "^4.13.0",
     "@radix-ui/react-label": "^2.0.1",
+    "@radix-ui/react-tabs": "^1.0.3",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
     "http-proxy": "^1.18.1",
