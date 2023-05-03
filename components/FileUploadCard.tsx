@@ -44,6 +44,7 @@ const FileUploadCard = ({ item }: Props) => {
       method: "POST",
       body: JSON.stringify({
         fileId: item.id,
+        key: item.key,
       }),
     }).then((res) => {
       setDeleteModal(false);

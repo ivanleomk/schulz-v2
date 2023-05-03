@@ -6,7 +6,7 @@ export const runtime = "edge";
 export default async function handler(req: Request) {
   const body = await req.json();
 
-  const { fileId } = body;
+  const { fileId, key } = body;
 
   if (!fileId) {
     return new Response(
@@ -30,25 +30,19 @@ export default async function handler(req: Request) {
 
   try {
     const url = `${baseUrl}/delete-file`;
-    console.log(url);
+
     // We get our container to delete from S3
-    const res = await fetch(`${baseUrl}/delete-file`, {
+    const res = await fetch(`${baseUrl}/delete-file?key=${key}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${jwtToken}`,
       },
-      body: JSON.stringify({
-        key: fileId,
-      }),
     });
 
     console.log(res);
 
-    const file = await db
-      .updateTable("File")
-      .set({ deleted: 1 })
-      .where("id", "=", fileId)
-      .execute();
+    const file = await db.deleteFrom("File").where("id", "=", fileId).execute();
+
     return new Response(
       JSON.stringify({
         file,
