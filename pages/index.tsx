@@ -1,66 +1,37 @@
-import type { NextPage } from "next";
-import { useState } from "react";
-import { Button } from "../components/ui/button";
-import { Label } from "../components/ui/label";
-import { Input } from "../components/ui/input";
-import { ClipLoader } from "react-spinners";
-import { useS3Upload } from "next-s3-upload";
+import Link from "next/link";
+import React from "react";
 
-const Home: NextPage = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [uploadingFile, setUploadingFile] = useState(false);
-  let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
-
-  const handleUpload = async () => {
-    if (file === null) {
-      alert("No File");
-    }
-    setUploadingFile(true);
-    let { url, key } = await uploadToS3(file as File);
-    console.log(url, key);
-
-    const updateDb = await fetch("api/create-new-file", {
-      method: "POST",
-      body: JSON.stringify({
-        url,
-        key,
-      }),
-    });
-
-    setUploadingFile(false);
-  };
-
+const Home = () => {
   return (
-    <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
-      <Label htmlFor="Audio Transcript">Audio Transcript</Label>
-      <Input
-        id="Audio Transcript"
-        type="file"
-        accept=".mp3,.mp4"
-        onChange={(e) => {
-          const files = e?.target?.files;
-          if (files && files.length > 0) {
-            setFile(files[0]);
-          }
-        }}
-      />
-      <p className="text-xs text-gray-400">
-        Upload an audio transcript and we&apos;ll transcribe it all
-      </p>
-      <Button
-        className="py-1 px-2 w-full"
-        onClick={() => {
-          handleUpload();
-        }}
-        variant="outline"
-        disabled={uploadingFile}
-      >
-        {uploadingFile ? (
-          <ClipLoader size={20} speedMultiplier={0.4} />
-        ) : (
-          "Upload Audio"
-        )}
-      </Button>
+    <div className="flex  flex-col items-center justify-center h-screen">
+      <div className="mx-auto max-w-2xl ">
+        <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+          <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+            Announcing our new beta.{" "}
+            <Link href="/waitlist" className="font-semibold text-indigo-600">
+              <span className="absolute inset-0" aria-hidden="true" />
+              Sign up today <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </div>
+        </div>
+        <div className="text-center px-4">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            A New CRM for the digital age.
+          </h1>
+          <p className="mt-6 text-lg leading-8 text-gray-600">
+            Revolutionize your sales strategy with our new CRM - powered by GPT
+            technology for unparalleled insights and advantages
+          </p>
+          <div className="mt-10 flex items-center justify-center gap-x-6">
+            <Link href="/dashboard">
+              <p className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Enter The App
+              </p>
+            </Link>
+            <Link href="/dashboard">Go To Dashboard</Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
