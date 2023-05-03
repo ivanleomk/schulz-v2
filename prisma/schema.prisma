@@ -91,6 +91,7 @@ model File {
     user              User            @relation(fields: [userId], references: [id])
     userId            String
     FileToMeeting     FileToMeeting[]
+    deleted           Boolean         @default(false)
 
     @@index([userId])
 }

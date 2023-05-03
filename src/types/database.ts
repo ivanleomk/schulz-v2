@@ -29,6 +29,7 @@ export interface File {
   isTranscribed: Generated<number>;
   transcript: string | null;
   userId: string;
+  deleted: Generated<number>;
 }
 
 export interface FileToMeeting {

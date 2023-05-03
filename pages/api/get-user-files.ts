@@ -21,6 +21,7 @@ export default async function handler(req: Request) {
     .selectFrom("File")
     .selectAll()
     .where("userId", "=", userId)
+    .where("deleted", "=", 0)
     .execute();
 
   return new Response(
