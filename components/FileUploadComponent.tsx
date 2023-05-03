@@ -37,35 +37,41 @@ const FileUploadComponent = () => {
       alert("No User");
     }
     setUploadingFile(true);
-    let { url, key } = await uploadToS3(file as File);
+    try {
+      const { url, key } = await uploadToS3(file as File);
+      if (!url || !key) {
+        toast({
+          title: "Error Encountered",
+          description: "Unable to upload file",
+        });
+        return;
+      }
 
-    if (!url || !key) {
+      const updateDb = await fetch("api/create-new-file", {
+        method: "POST",
+        body: JSON.stringify({
+          url,
+          key,
+          userId,
+        }),
+      });
+
+      setUploadingFile(false);
+      toast({
+        title: "Success",
+        description:
+          "Sucessfully Uploaded file - transcript should be avaliable soon",
+      });
+      queryClient.invalidateQueries({
+        queryKey: GET_USER_FILES,
+      });
+      setOpen(false);
+    } catch (err) {
       toast({
         title: "Error Encountered",
         description: "Unable to upload file",
       });
-      return;
     }
-
-    const updateDb = await fetch("api/create-new-file", {
-      method: "POST",
-      body: JSON.stringify({
-        url,
-        key,
-        userId,
-      }),
-    });
-
-    setUploadingFile(false);
-    toast({
-      title: "Success",
-      description:
-        "Sucessfully Uploaded file - transcript should be avaliable soon",
-    });
-    queryClient.invalidateQueries({
-      queryKey: GET_USER_FILES,
-    });
-    setOpen(false);
   };
 
   return (
