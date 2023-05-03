@@ -17,7 +17,11 @@ export default async function handler(req: Request) {
     );
   }
 
-  const file = await db.deleteFrom("File").where("id", "=", fileId).execute();
+  const file = await db
+    .updateTable("File")
+    .set({ deleted: 1 })
+    .where("id", "=", fileId)
+    .execute();
 
   return new Response(
     JSON.stringify({
