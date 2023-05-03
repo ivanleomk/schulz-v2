@@ -9,20 +9,20 @@ export default async function handler(
   const body = await req.body;
   const parsedBody = JSON.parse(body);
 
-  const { url, key } = parsedBody;
+  const { url, key, userId } = parsedBody;
 
   const file = await db
     .insertInto("File")
     .values({
       key,
       url,
+      userId,
     })
     .execute();
-  console.log(file);
 
   if (!file) {
-    return NextResponse.error();
+    res.status(400).json({ message: "Unable to write to file" });
   }
 
-  return res.status(200).json({ name: "John Doe" });
+  res.status(200).json({ message: "Ok" });
 }

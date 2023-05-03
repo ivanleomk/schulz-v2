@@ -4,37 +4,19 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>;
 
-export interface Collateral {
-  collateral_id: Generated<number>;
-  url: string;
-  summary: string;
-}
-
-export interface Company {
-  id: Generated<number>;
-  company_name: string;
-  user_id: string;
-}
-
-export interface Customer {
-  customer_id: Generated<number>;
-  user_id: string;
-  company_id: number;
-  biodata: string;
-  title: string;
-}
-
-export interface Deal {
-  deal_id: Generated<number>;
-  deal_size: number;
-  deal_description: string;
-  customer_id: number;
-}
-
-export interface Email {
-  email_id: Generated<number>;
-  email_content: string;
-  prospects_involved: string;
+export interface Account {
+  id: string;
+  userId: string;
+  type: string;
+  provider: string;
+  providerAccountId: string;
+  refresh_token: string | null;
+  access_token: string | null;
+  expires_at: number | null;
+  token_type: string | null;
+  scope: string | null;
+  id_token: string | null;
+  session_state: string | null;
 }
 
 export interface File {
@@ -46,43 +28,51 @@ export interface File {
   startedprocessing: Generated<Date>;
   isTranscribed: Generated<number>;
   transcript: string | null;
+  userId: string;
+}
+
+export interface FileToMeeting {
+  id: Generated<number>;
+  meetingId: string;
+  fileId: number;
 }
 
 export interface Meeting {
-  meeting_id: Generated<number>;
-  user_id: string;
-  summary: string;
-  meeting_date: Date;
-  meeting_notes: string;
+  userId: string;
+  date: Date;
+  description: string;
+  id: string;
+  note: string;
+  title: string;
 }
 
-export interface Note {
-  note_id: Generated<number>;
-  note_text: string;
+export interface Session {
+  id: string;
+  sessionToken: string;
+  userId: string;
+  expires: Date;
 }
 
 export interface User {
-  user_id: string;
-  user_name: string;
-  credits: Generated<number>;
+  id: string;
+  name: string | null;
+  email: string | null;
+  emailVerified: Date | null;
+  image: string | null;
 }
 
-export interface Waitlist {
-  email: string;
-  goal: Generated<string>;
-  name: string;
-  createAt: Generated<Date>;
+export interface VerificationToken {
+  identifier: string;
+  token: string;
+  expires: Date;
 }
 
 export interface DB {
-  collateral: Collateral;
-  Company: Company;
-  Customer: Customer;
-  Deal: Deal;
-  Email: Email;
+  Account: Account;
   File: File;
+  FileToMeeting: FileToMeeting;
   Meeting: Meeting;
-  Note: Note;
+  Session: Session;
   User: User;
-  Waitlist: Waitlist;
+  VerificationToken: VerificationToken;
 }

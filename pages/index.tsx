@@ -28,7 +28,6 @@ const Home = () => {
                 Enter The App
               </p>
             </Link>
-            <Link href="/dashboard">Go To Dashboard</Link>
           </div>
         </div>
       </div>
