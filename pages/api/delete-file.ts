@@ -29,7 +29,8 @@ export default async function handler(req: Request) {
   }
 
   try {
-    const url = `${baseUrl}/delete-file`;
+    const url = `${baseUrl}/delete-file?key=${key}`;
+    console.log(`Making a call now to ${url} with JWT bearer ${jwtToken}`);
 
     // We get our container to delete from S3
     const res = await fetch(`${baseUrl}/delete-file?key=${key}`, {
@@ -39,7 +40,8 @@ export default async function handler(req: Request) {
       },
     });
 
-    console.log(res);
+    console.log(`Response from backend: ${res.status} ${res.statusText}`);
+    console.log("---Uploading DB now");
 
     const file = await db.deleteFrom("File").where("id", "=", fileId).execute();
 
