@@ -62,7 +62,7 @@ const FileUploadCard = ({ item }: Props) => {
           <p className="text-md font-semibold mb-2">
             {item.key.split("/").pop()?.trim()}
           </p>
-          {item.isProcessing ? (
+          {item.isTranscribed ? (
             <Badge variant="outline">Processed</Badge>
           ) : (
             <Badge variant="outline">Processing</Badge>
